@@ -18,9 +18,11 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Rust
-      uses: actions/setup-rust@v1
+      uses: rust-lang/rustup@v1
       with:
-        rust-version: stable
+        profile: minimal
+        default-toolchain: stable
+        components: cargo
 
     - name: Build Driver Client
       working-directory: Driver_Client
