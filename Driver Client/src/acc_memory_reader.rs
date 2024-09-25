@@ -1,16 +1,16 @@
 use std::ffi::c_void;
-use std::ops::Bound::Unbounded;
 use std::ptr::null;
 use windows::Win32::System::Memory::{
     OpenFileMappingW, MapViewOfFile, UnmapViewOfFile, FILE_MAP_READ
 };
-use windows::Win32::Foundation::{GetLastError, HANDLE};
+use windows::Win32::Foundation::{GetLastError};
 use windows::core::{HSTRING, PCWSTR};
 use crate::shared_file_out::SPageFilePhysics;
 use crate::shared_file_out::SPageFileGraphics;
 use crate::shared_file_out::SPageFileStatic;
 
-pub(crate) fn init_phys() -> *const SPageFilePhysics {
+
+fn init_phys() -> *const SPageFilePhysics {
     unsafe {
         let mapping_name = HSTRING::from("Local\\acpmf_physics");
         let file_mapping_result = OpenFileMappingW(FILE_MAP_READ.0, false, PCWSTR(mapping_name.as_ptr()));
@@ -29,8 +29,7 @@ pub(crate) fn init_phys() -> *const SPageFilePhysics {
     }
 }
 
-
-pub(crate) fn init_graph() -> *const SPageFileGraphics {
+fn init_graph() -> *const SPageFileGraphics {
     unsafe {
         let mapping_name = HSTRING::from("Local\\acpmf_graphics");
         let file_mapping_result = OpenFileMappingW(FILE_MAP_READ.0, false, PCWSTR(mapping_name.as_ptr()));
@@ -49,7 +48,7 @@ pub(crate) fn init_graph() -> *const SPageFileGraphics {
     }
 }
 
-pub(crate) fn init_stat() -> *const SPageFileStatic {
+fn init_stat() -> *const SPageFileStatic {
     unsafe {
         let mapping_name = HSTRING::from("Local\\acpmf_static");
         let file_mapping_result = OpenFileMappingW(FILE_MAP_READ.0, false, PCWSTR(mapping_name.as_ptr()));
@@ -68,20 +67,34 @@ pub(crate) fn init_stat() -> *const SPageFileStatic {
     }
 }
 
-pub(crate) fn dismiss_phys(phys: *const SPageFilePhysics) {
+pub(crate) fn init() -> (*const SPageFilePhysics, *const SPageFileGraphics, *const SPageFileStatic) {
+    (init_phys(), init_graph(), init_stat())
+}
+
+
+
+fn dismiss_phys(phys: *const SPageFilePhysics) {
     unsafe {
         UnmapViewOfFile(phys as *const _);
     }
 }
 
-pub(crate) fn dismiss_graph(graph: *const SPageFileGraphics) {
+fn dismiss_graph(graph: *const SPageFileGraphics) {
     unsafe {
         UnmapViewOfFile(graph as *const _);
     }
 }
 
-pub(crate) fn dismiss_stat(stat: *const SPageFileStatic) {
+fn dismiss_stat(stat: *const SPageFileStatic) {
     unsafe {
         UnmapViewOfFile(stat as *const _);
+    }
+}
+
+pub(crate) fn dismiss(phys: *const SPageFilePhysics, graph: *const SPageFileGraphics, stat: *const SPageFileStatic){
+    unsafe {
+        dismiss_phys(phys);
+        dismiss_graph(graph);
+        dismiss_stat(stat);
     }
 }
