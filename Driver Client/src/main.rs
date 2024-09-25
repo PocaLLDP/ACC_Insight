@@ -1,30 +1,38 @@
+use std::ptr::null;
 use std::thread;
 use std::time::Duration;
 
 mod shared_file_out;
 mod acc_memory_reader;
+use crate::acc_memory_reader::{dismiss, init};
 
-use shared_file_out::SPageFilePhysics;
-use crate::acc_memory_reader::{dismiss_graph, dismiss_phys, dismiss_stat};
+fn main(){
+    let mut phys = null();
+    let mut graph = null();
+    let mut stat = null();
 
-fn main() -> windows::core::Result<()> {
-    let phys = acc_memory_reader::init_phys();
-    let graph = acc_memory_reader::init_graph();
-    let stat = acc_memory_reader::init_stat();
+    loop {
+        (phys, graph, stat) = init();
+
+        if(phys != null() && graph != null() && stat != null()){
+            break;
+        }
+    }
+    let mut last_packet_id = unsafe { (*phys).packet_id };
 
     loop {
         unsafe {
-            if phys.is_null() {
+            if(last_packet_id == (*phys).packet_id){
+                println!("in menu");
                 thread::sleep(Duration::from_millis(500));
-                continue;
+            }else {
+                last_packet_id = (*phys).packet_id;
+                println!("{}", (*phys).packet_id);
+                println!("{}", (*graph).active_cars);
+                println!("{:?}", (*stat).ac_version);
+                thread::sleep(Duration::from_millis(250));
             }
-            print!("{}", (*phys).packet_id);
-            print!("{}", (*graph).active_cars);
-            print!("{:?}", (*stat).ac_version);
-
         }
     }
-    dismiss_phys(phys);
-    dismiss_graph(graph);
-    dismiss_stat(stat);
+    dismiss(phys, graph, stat);
 }
