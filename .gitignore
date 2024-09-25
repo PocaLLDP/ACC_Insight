@@ -1,5 +1,5 @@
 /ACC_SM_Waki_host/
 /ACC_SM_Waki_monitor/
 /ConsoleApplication1/
-/Driver Client/target/
-/Driver Client/Cargo.lock
+/driver_client/target/
+/driver_client/Cargo.lock

@@ -1,5 +1,5 @@
 [package]
-name = "Driver_Client"
+name = "driver_client"
 version = "0.1.0"
 edition = "2021"
 
