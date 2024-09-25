@@ -1,6 +1,5 @@
 /ACC_SM_Waki_host/
 /ACC_SM_Waki_monitor/
 /ConsoleApplication1/
-/Server/target/
-/Server/acpmf_physics
-/Server/Cargo.lock
+/Driver Client/target/
+/Driver Client/Cargo.lock
