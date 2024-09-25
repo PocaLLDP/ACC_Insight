@@ -12,11 +12,28 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build
+
+    - name: Set up Rust
+      uses: actions/setup-rust@v1
+      with:
+        rust-version: stable
+
+    - name: Build Driver Client
+      working-directory: Driver_Client
       run: cargo build --verbose
-    - name: Run tests
+
+    - name: Run Driver Client Tests
+      working-directory: Driver_Client
+      run: cargo test --verbose
+
+    - name: Build Manager Client
+      working-directory: Manager_Client
+      run: cargo build --verbose
+
+    - name: Run Manager Client Tests
+      working-directory: Manager_Client
       run: cargo test --verbose
