@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "driver_client",
+    "manager_client",
+    "p2p_lib",
+    "acc_lib"
+]
+resolver = "2"

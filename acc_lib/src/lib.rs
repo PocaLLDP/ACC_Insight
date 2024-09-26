@@ -1,3 +1,5 @@
+mod shared_file_out;
+
 use std::ffi::c_void;
 use std::ptr::null;
 use windows::Win32::System::Memory::{
@@ -5,9 +7,9 @@ use windows::Win32::System::Memory::{
 };
 use windows::Win32::Foundation::{GetLastError};
 use windows::core::{HSTRING, PCWSTR};
-use crate::shared_file_out::SPageFilePhysics;
-use crate::shared_file_out::SPageFileGraphics;
-use crate::shared_file_out::SPageFileStatic;
+use shared_file_out::SPageFilePhysics;
+use shared_file_out::SPageFileGraphics;
+use shared_file_out::SPageFileStatic;
 
 
 fn init_phys() -> *const SPageFilePhysics {
@@ -67,7 +69,7 @@ fn init_stat() -> *const SPageFileStatic {
     }
 }
 
-pub(crate) fn init() -> (*const SPageFilePhysics, *const SPageFileGraphics, *const SPageFileStatic) {
+pub fn init() -> (*const SPageFilePhysics, *const SPageFileGraphics, *const SPageFileStatic) {
     (init_phys(), init_graph(), init_stat())
 }
 
@@ -91,10 +93,8 @@ fn dismiss_stat(stat: *const SPageFileStatic) {
     }
 }
 
-pub(crate) fn dismiss(phys: *const SPageFilePhysics, graph: *const SPageFileGraphics, stat: *const SPageFileStatic){
-    unsafe {
-        dismiss_phys(phys);
-        dismiss_graph(graph);
-        dismiss_stat(stat);
-    }
+pub fn dismiss(phys: *const SPageFilePhysics, graph: *const SPageFileGraphics, stat: *const SPageFileStatic){
+    dismiss_phys(phys);
+    dismiss_graph(graph);
+    dismiss_stat(stat);
 }

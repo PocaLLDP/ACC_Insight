@@ -2,9 +2,7 @@ use std::ptr::null;
 use std::thread;
 use std::time::Duration;
 
-mod shared_file_out;
-mod acc_memory_reader;
-use crate::acc_memory_reader::{dismiss, init};
+use acc_lib::{init, dismiss};
 
 fn main(){
     let mut phys = null();
@@ -14,7 +12,7 @@ fn main(){
     loop {
         (phys, graph, stat) = init();
 
-        if(phys != null() && graph != null() && stat != null()){
+        if phys != null() && graph != null() && stat != null() {
             break;
         }
     }
@@ -22,7 +20,7 @@ fn main(){
 
     loop {
         unsafe {
-            if(last_packet_id == (*phys).packet_id){
+            if last_packet_id == (*phys).packet_id {
                 println!("in menu");
                 thread::sleep(Duration::from_millis(500));
             }else {
