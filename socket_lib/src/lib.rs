@@ -33,4 +33,4 @@ fn receive_data(stream: &mut TcpStream) -> Result<Vec<u8>, Box<dyn Error>> {
     let mut buffer = vec![0u8; size];
     stream.read_exact(&mut buffer)?;
     Ok(buffer)
-}+
+}
