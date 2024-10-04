@@ -1,3 +1,5 @@
+mod connection;
+
 use std::ptr::null;
 use std::thread;
 use std::time::Duration;
