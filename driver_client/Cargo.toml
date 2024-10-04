@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 p2p_lib = { path = "../p2p_lib" }
 acc_lib = { path = "../acc_lib" }
+socket_lib = { path = "../socket_lib" }

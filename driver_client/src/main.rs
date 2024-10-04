@@ -2,9 +2,9 @@ use std::ptr::null;
 use std::thread;
 use std::time::Duration;
 
-use acc_lib::{init, dismiss};
+use acc_lib::{dismiss, init};
 
-fn main(){
+fn main() {
     let mut phys = null();
     let mut graph = null();
     let mut stat = null();
@@ -23,7 +23,7 @@ fn main(){
             if last_packet_id == (*phys).packet_id {
                 println!("in menu");
                 thread::sleep(Duration::from_millis(500));
-            }else {
+            } else {
                 last_packet_id = (*phys).packet_id;
                 println!("{}", (*phys).packet_id);
                 println!("{}", (*graph).active_cars);
