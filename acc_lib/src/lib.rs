@@ -5,6 +5,8 @@ use windows::Win32::Foundation::GetLastError;
 use windows::Win32::System::Memory::{
     MapViewOfFile, OpenFileMappingW, UnmapViewOfFile, FILE_MAP_READ,
 };
+use bincode::{serialize, deserialize};
+use std::error::Error;
 
 
 // Constants
@@ -407,4 +409,14 @@ pub fn dismiss(
     dismiss_phys(phys);
     dismiss_graph(graph);
     dismiss_stat(stat);
+}
+
+fn encode<T: Serialize>(structure: &T) -> Result<Vec<u8>, Box<dyn Error>> {
+    let encoded = serialize(structure)?;
+    Ok(encoded)
+}
+
+fn decode<'a, T: Deserialize<'a>>(bytes: &'a [u8]) -> Result<T, Box<dyn Error>> {
+    let decoded = deserialize(bytes)?;
+    Ok(decoded)
 }
