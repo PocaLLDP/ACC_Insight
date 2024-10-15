@@ -26,11 +26,8 @@ fn main() {
                 println!("in menu");
                 thread::sleep(Duration::from_millis(500));
             } else {
-                last_packet_id = (*phys).packet_id;
-                println!("{}", (*phys).packet_id);
-                println!("{}", (*graph).active_cars);
-                println!("{:?}", (*stat).ac_version);
-                thread::sleep(Duration::from_millis(250));
+                connection::main_loop(&phys, &graph, &stat, "127.0.0.1:8080");
+                break
             }
         }
     }

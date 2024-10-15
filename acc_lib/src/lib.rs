@@ -6,6 +6,7 @@ use windows::Win32::System::Memory::{
     MapViewOfFile, OpenFileMappingW, UnmapViewOfFile, FILE_MAP_READ,
 };
 use bincode::{serialize, deserialize};
+use serde::{Serialize, Deserialize};
 use std::error::Error;
 
 
@@ -78,6 +79,7 @@ pub const ACC_HEAVY_RAIN: i32 = 4;
 pub const ACC_THUNDERSTORM: i32 = 5;
 
 #[repr(C)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SPageFilePhysics {
     pub packet_id: i32,
     pub gas: f32,
@@ -167,6 +169,7 @@ pub struct SPageFilePhysics {
 }
 
 #[repr(C)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SPageFileGraphics {
     pub packet_id: i32,
     pub status: i32,
@@ -258,6 +261,7 @@ pub struct SPageFileGraphics {
 }
 
 #[repr(C)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SPageFileStatic {
     pub sm_version: [u16; 15],
     pub ac_version: [u16; 15],
@@ -411,12 +415,12 @@ pub fn dismiss(
     dismiss_stat(stat);
 }
 
-fn encode<T: Serialize>(structure: &T) -> Result<Vec<u8>, Box<dyn Error>> {
-    let encoded = serialize(structure)?;
+pub fn encode_acc_struct<T: Serialize>(structure: &T) -> Result<Vec<u8>, Box<dyn Error>> {
+    let encoded = bincode::serialize(&structure).unwrap();
     Ok(encoded)
 }
 
-fn decode<'a, T: Deserialize<'a>>(bytes: &'a [u8]) -> Result<T, Box<dyn Error>> {
+pub fn decode_acc_struct<'a, T: Deserialize<'a>>(bytes: &'a [u8]) -> Result<T, Box<dyn Error>> {
     let decoded = deserialize(bytes)?;
     Ok(decoded)
 }
