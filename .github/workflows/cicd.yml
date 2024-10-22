@@ -20,10 +20,19 @@ jobs:
         working-directory: driver_client
         run: cargo build --verbose
 
+  driver-client-test:
+    runs-on: windows-latest
+
+    needs: driver-client-build
+
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Run Driver Client Tests
         working-directory: driver_client
         run: cargo test --verbose
 
+    
   manager-client-build:
     runs-on: windows-latest
 
@@ -33,6 +42,14 @@ jobs:
       - name: Build Manager Client
         working-directory: manager_client
         run: cargo build --verbose
+
+  manager-client-test:
+    runs-on: windows-latest
+
+    needs: manager-client-build
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Run Manager Client Tests
         working-directory: manager_client
