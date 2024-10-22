@@ -1,4 +1,4 @@
-name: Rust
+name: Rust CI/CD
 
 on:
   push:
@@ -10,13 +10,30 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
+  driver-client-build:
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
-      - name: Build
+
+      - name: Build Driver Client
+        working-directory: driver_client
         run: cargo build --verbose
-      - name: Run tests
+
+      - name: Run Driver Client Tests
+        working-directory: driver_client
+        run: cargo test --verbose
+
+  manager-client-build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Manager Client
+        working-directory: manager_client
+        run: cargo build --verbose
+
+      - name: Run Manager Client Tests
+        working-directory: manager_client
         run: cargo test --verbose
