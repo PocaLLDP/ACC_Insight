@@ -3,8 +3,6 @@ use std::io;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 
-mod server;
-
 pub fn create_listener(address: &str) -> TcpListener {
     TcpListener::bind(address).unwrap()
 }
@@ -21,12 +19,12 @@ pub fn send_data(stream: &mut TcpStream, data: &[u8]) -> Result<(), Box<dyn Erro
     Ok(())
 }
 
-pub fn receive_data(listener: & TcpListener) -> Result<Vec<u8>, Box<dyn Error>> {
+pub fn receive_data(stream: &mut TcpStream) -> Result<Vec<u8>, Box<dyn Error>> {
     let mut size_buffer = [0u8; 8];
-    listener.read_exact(&mut size_buffer)?;
+    stream.read_exact(&mut size_buffer)?;
     let size = u64::from_le_bytes(size_buffer) as usize;
 
     let mut buffer = vec![0u8; size];
-    listener.read_exact(&mut buffer)?;
+    stream.read_exact(&mut buffer)?;
     Ok(buffer)
 }
